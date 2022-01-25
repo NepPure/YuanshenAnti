@@ -16,7 +16,7 @@ https://github.com/NepPure/YuanshenAnti/releases
 
 ```sh
 chmod +x YuanshenAnti
-sudo ./YuanshenAnti.dll
+sudo ./YuanshenAnti
 ```
 
 按提示操作即可
