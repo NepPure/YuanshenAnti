@@ -14,8 +14,7 @@ https://dotnet.microsoft.com/zh-cn/download
 
 ### 3、控制台启动
 
-定位到`YuanshenAnti.dll`所在目录
-
+定位到`YuanshenAnti.dll`所在目录,先启动脚本
 
 ```sh
 sudo dotnet YuanshenAnti.dll
