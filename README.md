@@ -10,6 +10,8 @@ https://dotnet.microsoft.com/zh-cn/download
 
 ### 2、Release中下载Mac版本
 
+https://github.com/NepPure/YuanshenAnti/releases
+
 > 自己编译一下也行
 
 ### 3、控制台启动
@@ -25,5 +27,7 @@ sudo dotnet YuanshenAnti.dll
 ## Windows版本教程
 
 ### 1、Release中下载Windows版本
+
+https://github.com/NepPure/YuanshenAnti/releases
 
 右键管理员模式运行，其他的同MAC
