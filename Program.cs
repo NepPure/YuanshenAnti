@@ -41,8 +41,8 @@ namespace YuanshenAnti
 
             try
             {
-                var path = "/Users/owen/Library/Containers/com.miHoYo.Yuanshen/Data/Library/MihoyoDownload/Persistent";
-                Console.WriteLine("请输入Persistent文件夹路径，以Persistent结束，例如“/Users/owen/Library/Containers/com.miHoYo.Yuanshen/Data/Library/MihoyoDownload/Persistent”Windows版本在游戏安装目录下：");
+                var path = Environment.OSVersion.Platform == PlatformID.Win32NT ? @"D:\Game\Genshin Impact\Genshin Impact Game\YuanShen_Data\Persistent" : "/Users/owen/Library/Containers/com.miHoYo.Yuanshen/Data/Library/MihoyoDownload/Persistent";
+                Console.WriteLine($"请输入Persistent文件夹路径，以Persistent结束，例如“{path}”：");
                 var customPath = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(customPath))
                 {
