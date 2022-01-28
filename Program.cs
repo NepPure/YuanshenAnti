@@ -61,15 +61,15 @@ namespace YuanshenAnti
                     File.Delete(silence_rev);
                 }
 
-                if (File.Exists(audio_rev))
-                {
-                    File.Delete(audio_rev);
-                }
+                //if (File.Exists(audio_rev))
+                //{
+                //    File.Delete(audio_rev);
+                //}
 
-                if (File.Exists(res_rev))
-                {
-                    File.Delete(res_rev);
-                }
+                //if (File.Exists(res_rev))
+                //{
+                //    File.Delete(res_rev);
+                //}
 
                 if (File.Exists(data_rev))
                 {
@@ -77,16 +77,11 @@ namespace YuanshenAnti
                 }
 
 
+                var processName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "YuanShen.exe" : "Yuanshen";
+
                 while (true)
                 {
-                    //mac
-                    var ps = Process.GetProcessesByName("Yuanshen");
-                    if (ps.Any())
-                    {
-                        break;
-                    }
-                    //windows
-                    ps = Process.GetProcessesByName("YuanShen.exe");
+                    var ps = Process.GetProcessesByName(processName);
                     if (ps.Any())
                     {
                         break;
@@ -107,7 +102,7 @@ namespace YuanshenAnti
                         try
                         {
                             File.SetAttributes(path_remote, FileAttributes.Normal);
-                            await File.WriteAllTextAsync(path_remote, "");
+                            await File.WriteAllTextAsync(path_remote, ResourceText.silence_data_versions_persist);
                             if (i > 90 && await File.ReadAllTextAsync(path_remote) == "")
                             {
                                 break;
@@ -146,6 +141,113 @@ namespace YuanshenAnti
                     await Task.Delay(1000);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            Console.WriteLine("按任意键退出");
+            Console.ReadKey();
+        }
+
+        private static async Task MainAsync2()
+        {
+            Console.WriteLine(@"                       注意！！！
+                本脚本涉及修改游戏文件
+                不保证完全没有封号风险
+        使用说明：
+                每次重启游戏后恢复正常
+                本脚本将 角色建模 及 飞行时的模糊 恢复到2.3
+                每次使用本脚本启动游戏，游戏内都将重新校验游戏资源                
+            
+                本脚本完全开源
+                如有顾虑请不要使用
+
+        使用本脚本即视为同意以下条款：
+            1、本脚本完全用作技术交流、学习，用作其他用途产生的一切损失由使用者承担
+            2、若使用本脚本对任何集体、个人、团体、集团、公司的合法利益造成侵害，一切责任由使用者承担
+            3、不合理合法合规使用本脚本，造成的一切损失均由使用者承担，与作者无关
+            4、使用本脚本产生的一切损失由使用者承担
+            5、如不同意以上内容，请立即退出并完全删除此脚本
+
+          本项目源码来自旁边大佬的python脚本，dotnet版本由不知名的nep编写
+");
+
+            Console.WriteLine("继续使用即视为完全阅读且同意以上内容\n按任意键继续或者关闭脚本：");
+            Console.ReadKey();
+
+            try
+            {
+                var path = Environment.OSVersion.Platform == PlatformID.Win32NT ? @"D:\Game\Genshin Impact\Genshin Impact Game\YuanShen_Data\Persistent" : "/Users/owen/Library/Containers/com.miHoYo.Yuanshen/Data/Library/MihoyoDownload/Persistent";
+                Console.WriteLine($"请输入Persistent文件夹路径，以Persistent结束，例如“{path}”：");
+                var customPath = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(customPath))
+                {
+                    path = customPath;
+                }
+
+                var anti_path = Path.Combine(path, "AssetBundles/blocks/00/29342328.blk");
+                var path_presist = Path.Combine(path, "silence_data_versions_persist");
+                var path_remote = Path.Combine(path, "silence_data_versions_remote");
+
+
+                var processName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "YuanShen.exe" : "Yuanshen";
+
+                while (true)
+                {
+                    var ps = Process.GetProcessesByName(processName);
+                    if (ps.Any())
+                    {
+                        break;
+                    }
+                    Console.WriteLine("正在等待原神启动");
+                    await Task.Delay(1000);
+                }
+
+                Console.WriteLine("原神已启动");
+                var t1 = Task.Run(async () =>
+                 {
+                     while (true)
+                     {
+                         if (File.Exists(path_presist) && (await File.ReadAllTextAsync(path_presist)) != ResourceText.silence_data_versions_persist)
+                         {
+                             File.SetAttributes(path_presist, FileAttributes.Normal);
+                             await File.WriteAllTextAsync(path_presist, ResourceText.silence_data_versions_persist);
+                             await Task.Delay(1000);
+                         }
+                     }
+                 });
+
+                var t2 = Task.Run(async () =>
+                 {
+                     while (true)
+                     {
+                         if (File.Exists(path_remote) && (await File.ReadAllTextAsync(path_remote)) != ResourceText.silence_data_versions_persist)
+                         {
+                             await Task.Delay(5);
+                             File.SetAttributes(path_remote, FileAttributes.Normal);
+                             await File.WriteAllTextAsync(path_remote, ResourceText.silence_data_versions_persist);
+                             await Task.Delay(1000);
+                         }
+                     }
+                 });
+
+                var t3 = Task.Run(async () =>
+                {
+                    while (true)
+                    {
+                        if (File.Exists(anti_path))
+                        {
+                            File.SetAttributes(anti_path, FileAttributes.Normal);
+                            await File.WriteAllTextAsync(anti_path, "");
+                            //break;
+                        }
+
+                    }
+                });
+
+                Task.WaitAll(t1, t2, t3);
             }
             catch (Exception ex)
             {
