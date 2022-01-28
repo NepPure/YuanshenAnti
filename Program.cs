@@ -66,15 +66,15 @@ namespace YuanshenAnti
                 //    File.Delete(audio_rev);
                 //}
 
-                //if (File.Exists(res_rev))
-                //{
-                //    File.Delete(res_rev);
-                //}
-
-                if (File.Exists(data_rev))
+                if (File.Exists(res_rev))
                 {
-                    File.Delete(data_rev);
+                    File.Delete(res_rev);
                 }
+
+                //if (File.Exists(data_rev))
+                //{
+                //    File.Delete(data_rev);
+                //}
 
 
                 var processName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "YuanShen.exe" : "Yuanshen";
@@ -103,7 +103,7 @@ namespace YuanshenAnti
                         {
                             File.SetAttributes(path_remote, FileAttributes.Normal);
                             await File.WriteAllTextAsync(path_remote, ResourceText.silence_data_versions_persist);
-                            if (i > 90 && await File.ReadAllTextAsync(path_remote) == "")
+                            if (i > 90)
                             {
                                 break;
                             }
@@ -111,32 +111,32 @@ namespace YuanshenAnti
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("设置remote出错", ex);
+                            Console.WriteLine(ex);
                         }
                     }
 
-                    if (File.Exists(path_presist))
-                    {
-                        try
-                        {
-                            File.SetAttributes(path_presist, FileAttributes.Normal);
-                            await File.WriteAllTextAsync(path_presist, "");
-                            if (f > 90 && await File.ReadAllTextAsync(path_presist) == "")
-                            {
-                                break;
-                            }
-                            f++;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("设置presist出错", ex);
-                        }
-                    }
+                    //if (File.Exists(path_presist))
+                    //{
+                    //    try
+                    //    {
+                    //        File.SetAttributes(path_presist, FileAttributes.Normal);
+                    //        await File.WriteAllTextAsync(path_presist, "");
+                    //        if (f > 90 && await File.ReadAllTextAsync(path_presist) == "")
+                    //        {
+                    //            break;
+                    //        }
+                    //        f++;
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        Console.WriteLine("设置presist出错", ex);
+                    //    }
+                    //}
 
-                    if (i > 120 && f > 120)
-                    {
-                        break;
-                    }
+                    //if (i > 120 && f > 120)
+                    //{
+                    //    break;
+                    //}
 
                     await Task.Delay(1000);
                 }
